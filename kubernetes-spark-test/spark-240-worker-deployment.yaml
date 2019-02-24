@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: spark-240-worker
+    labels:
+        app: spark-worker
+spec:
+    replicas: 1
+    selector:
+        matchLabels:
+            app: spark-worker
+    template:
+        metadata:
+            labels:
+                app: spark-worker
+        spec:
+            containers:
+                - name: spark-master
+                  image: localhost:32000/spark240:latest
+                  command: ["/start-worker.sh"]
+                  ports:
+                      - containerPort: 8081
+                      - containerPort: 10000
+                      - containerPort: 10001
+                      - containerPort: 10002
+                  resources:
+                      requests:
+                          cpu: 100m

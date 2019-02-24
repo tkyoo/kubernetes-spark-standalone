@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: spark-240-driver
+    labels:
+        app: spark-driver
+spec:
+    replicas: 1
+    selector:
+        matchLabels:
+            app: spark-driver
+    template:
+        metadata:
+            labels:
+                app: spark-driver
+        spec:
+            hostname: spark-driver
+            containers:
+                - name: spark-driver
+                  image: localhost:32000/spark240:latest
+                  command: ["sleep"]
+                  args: ["3600"]
+                  ports:
+                      - containerPort: 4040
+                      - containerPort: 10000
+                      - containerPort: 10001
+                      - containerPort: 10002
+                  resources:
+                      requests:
+                          cpu: 100m

@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: spark-ui-proxy
+    labels:
+        app: spark-ui-proxy
+spec:
+    replicas: 1
+    selector:
+        matchLabels:
+            app: spark-ui-proxy
+    template:
+        metadata:
+            labels:
+                app: spark-ui-proxy
+        spec:
+            containers:
+                - name: spark-ui-proxy
+                  image: elsonrodriguez/spark-ui-proxy:1.0
+                  ports:
+                      - containerPort: 80
+                  resources:
+                      requests:
+                          cpu: 100m
+                  args:
+                      - spark-master:8080
+                  livenessProbe:
+                      httpGet:
+                          path: /
+                          port: 80
+                      initialDelaySeconds: 120
+                      timeoutSeconds: 5

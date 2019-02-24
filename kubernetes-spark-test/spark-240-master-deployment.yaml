@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: spark-240-master
+    labels:
+        app: spark-master
+spec:
+    replicas: 1
+    selector:
+        matchLabels:
+            app: spark-master
+    template:
+        metadata:
+            labels:
+                app: spark-master
+        spec:
+            hostname: spark-master
+            containers:
+                - name: spark-master
+                  image: localhost:32000/spark240:latest
+                  command: ["/start-master.sh"]
+                  ports:
+                      - containerPort: 7077
+                      - containerPort: 8080
+                      - containerPort: 10001
+                      - containerPort: 10002
+                  resources:
+                      requests:
+                          cpu: 100m
